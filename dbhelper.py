@@ -6,7 +6,7 @@ from os.path import join, dirname, realpath
 from time import time
 from datetime import datetime
 
-DATABASE = "waitercaller"
+DATABASE = "prontozap"
 IMAGES_PATH = join(dirname(realpath(__file__)), 'static')
 expire_time = 15*60
 
