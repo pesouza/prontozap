@@ -1,0 +1,180 @@
+<!-- landpage.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProntoZap</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* styles.css */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">ProntoZap</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showLoginPopup()">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showRegisterPopup()">Registrar</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="bg-light text-center py-5">
+        <div class="container">
+            <img src="{{ url_for('static', filename='images/prontozap-logo.png') }}"  width="200" alt="prontozap">
+            <h1 class="display-4">Bem-vindo à ProntoZap</h1>
+            <p class="lead">Agilizando seus pedidos com eficiência e praticidade.</p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title">Notificações pelo WhatsApp</h3>
+                            <img src="{{ url_for('static', filename='images/noti.jpg') }}" width="200" alt="notificatiion">
+                            <p class="card-text">Receba notificações instantâneas quando seu pedido estiver pronto para
+                                a entrega, diretamente no seu WhatsApp.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title">Simples e Eficiente</h3>
+                            <img src="{{ url_for('static', filename='images/simples.jpg') }}"  width="200" alt="simples">
+                            <p class="card-text">Nosso sistema simplifica o processo de notificação, tornando-o
+                                eficiente e fácil de usar para todos.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title">Suporte Contínuo</h3>
+                            <p class="card-text">Oferecemos suporte dedicado para garantir que você aproveite ao máximo
+                                nosso serviço de notificação via WhatsApp.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer id="footer" class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2024 ProntoZap. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Login Popup -->
+    <div id="login-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2>Login</h2>
+            <form action="/login" method="POST">
+                <!-- Formulário de login aqui -->
+                <input type="text" name="username" class="form-control mb-3" placeholder="Nome de usuário" required>
+                <input type="password" name="password" class="form-control mb-3" placeholder="Senha" required>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Popup -->
+    <div id="register-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h2>Cadastro</h2>
+            <form action="/cadastro" method="POST">
+                <!-- Formulário de cadastro aqui -->
+                <input type="text" name="username" class="form-control mb-3" placeholder="Nome de usuário" required>
+                <input type="email" name="email" class="form-control mb-3" placeholder="E-mail" required>
+                <input type="password" name="password" class="form-control mb-3" placeholder="Senha" required>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // scripts.js
+        function showLoginPopup() {
+            document.getElementById('login-popup').style.display = 'block';
+        }
+
+        function showRegisterPopup() {
+            document.getElementById('register-popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('login-popup').style.display = 'none';
+            document.getElementById('register-popup').style.display = 'none';
+        }
+
+    </script>
+</body>
+
+</html>
