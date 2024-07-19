@@ -1,7 +1,7 @@
 #!/usr/local/envs/flask/lib/python3.10
 import datetime
 import os
-#import stripe
+#6++import stripe
 from flask import Flask, flash
 from flask import redirect
 from flask import render_template
@@ -125,7 +125,7 @@ def load_user(user_id):
 
 @app.route("/login", methods=["POST"])
 def login():
-    form = LoginForm(request.form)
+    form = request.form
     if form.validate():
         stored_user = DB.get_user(form.loginemail.data)
         if stored_user and PH.validate_password(form.loginpassword.data, stored_user['salt'], stored_user['hashed']) and stored_user['confirmed']:
@@ -134,21 +134,21 @@ def login():
             DB.last_login(stored_user["email"])
             return redirect(url_for('account'))
         form.loginemail.errors.append("E-mail ou senha inválido")
-    return render_template("home.html", loginform=form, registrationform=RegistrationForm())
+    return render_template("index.html", loginform=form, registrationform=RegistrationForm())
 
 
 @app.route("/register", methods=["POST"])
 def register():
-    form = RegistrationForm(request.form)
+    form = request.form
     if form.validate():
         if DB.get_user(form.email.data):
             form.email.errors.append("Endereço de e-mail já registrado")
-            return render_template("home.html", loginform=LoginForm(), registrationform=form)
+            return render_template("index.html", loginform=LoginForm(), registrationform=form)
 
-        customer = stripe.Customer.create(
+        '''customer = stripe.Customer.create(
             email=request.form['email'],
             metadata={'estabelecimento': request.form['place']}
-        )
+        )'''
 
         salt = PH.get_salt()
         hashed = PH.get_hash(form.password2.data + salt)
