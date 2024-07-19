@@ -67,8 +67,8 @@ stripe.billing_portal.Configuration.create(
 
 DB = DBHelper()
 PH = PasswordHelper()
-BH = BitlyHelper()
-QH = QrcodeHelper()
+#BH = BitlyHelper()
+#QH = QrcodeHelper()
 
 YOUR_DOMAIN = 'https://prontozap.waiterexpress.com.br'
 
