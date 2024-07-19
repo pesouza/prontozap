@@ -47,7 +47,7 @@ mail = Mail(app)
     "secret_key": os.environ["STRIPE_SECRET_KEY"],
     "publishable_key": os.environ["STRIPE_PUBLISHABLE_KEY"],
 }
-"""
+
  
 stripe_keys = {
     "secret_key": config.STRIPE_SECRET_KEY,
@@ -57,7 +57,7 @@ stripe_keys = {
 
 stripe.api_key = stripe_keys["secret_key"]
 
-""" stripe.billing_portal.Configuration.create(
+stripe.billing_portal.Configuration.create(
   business_profile={
     "headline": "Cactus Practice partners with Stripe for simplified billing.",
   },
