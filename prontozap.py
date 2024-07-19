@@ -12,6 +12,7 @@ from flask_login import LoginManager, login_required, login_user, logout_user, c
 from flask_mail import Mail, Message
 from time import time
 import uuid
+import json
 
 import config
 if config.test:
@@ -157,15 +158,15 @@ def register():
 
         send_confirmation_email(form.email.data, token)
 
-        return render_template("home.html", loginform=LoginForm(), registrationform=form, onloadmessage="Registro bem sucedido! Verifique sua caixa postal.")
-    return render_template("home.html", loginform=LoginForm(), registrationform=form)
+        return render_template("index.html", loginform=LoginForm(), registrationform=form, onloadmessage="Registro bem sucedido! Verifique sua caixa postal.")
+    return render_template("index.html", loginform=LoginForm(), registrationform=form)
 
 @app.route("/confirm/<token>")
 def confirm_email(token):
     user = DB.confirm_email(token)
     if user is not None:
         send_welcome_email(user['email'], user['place'])
-        return render_template("home.html", loginform=LoginForm(), registrationform=RegistrationForm(), onloadmessage="Seu email foi confirmado!")
+        return render_template("index.html", loginform=LoginForm(), registrationform=RegistrationForm(), onloadmessage="Seu email foi confirmado!")
         #return "Seu email foi confirmado!"
     else:
         #return render_template("home.html", loginform=LoginForm(), registrationform=RegistrationForm(), onloadmessage="Token inválido!")
