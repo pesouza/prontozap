@@ -179,7 +179,7 @@ def logout():
 @app.route("/")
 def home():
     testemunhos = DB.get_testem()
-    return render_template("home.html", loginform=LoginForm(), registrationform=RegistrationForm(), 
+    return render_template("index.html", loginform=LoginForm(), registrationform=RegistrationForm(), 
                             testemunhos=testemunhos)
 
 
