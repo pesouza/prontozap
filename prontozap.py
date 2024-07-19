@@ -1,7 +1,7 @@
 #!/usr/local/envs/flask/lib/python3.10
 import datetime
 import os
-import stripe
+#import stripe
 from flask import Flask, flash
 from flask import redirect
 from flask import render_template
@@ -20,14 +20,14 @@ else:
     from dbhelper import DBHelper
 
 from passwordhelper import PasswordHelper
-from bitlyhelper import BitlyHelper
-from qrcodehelper import QrcodeHelper
+#from bitlyhelper import BitlyHelper
+#from qrcodehelper import QrcodeHelper
 from user import User
 
-from forms import RegistrationForm
-from forms import LoginForm
-from forms import CreateTableForm
-from forms import ContactForm
+#from forms import RegistrationForm
+#from forms import LoginForm
+#from forms import CreateTableForm
+#from forms import ContactForm
 
 
 app = Flask(__name__)
@@ -69,7 +69,7 @@ PH = PasswordHelper()
 BH = BitlyHelper()
 QH = QrcodeHelper()
 
-YOUR_DOMAIN = 'https://waiterexpress.com.br'
+YOUR_DOMAIN = 'https://prontozap.waiterexpress.com.br'
 
 def generate_confirmation_token():
     return str(uuid.uuid4().hex)
@@ -95,20 +95,20 @@ def send_contact_email(name, email, msg):
 
 def send_welcome_email(email, place):
     msg = Message(
-        subject = 'Bem-vindo ao Waiter Express!',
-        sender = ('Waiter Express', [config.email]),
+        subject = 'Bem-vindo ao ProntoZap!',
+        sender = ('Waiter Express (ProntoZap)', [config.email]),
         cc = [config.email],
         recipients = [email],        
         body = f"""
         Olá {place},
 
-É com grande satisfação que recebemos você como novo usuário do Waiter Express! Sabemos o quanto é importante para o seu negócio ter um atendimento ágil e eficiente, por isso, estamos aqui para ajudar.
+É com grande satisfação que recebemos você como novo usuário do ProntoZap! Sabemos o quanto é importante para o seu negócio ter um atendimento ágil e eficiente, por isso, estamos aqui para ajudar.
 
-Com o Waiter Express, seus clientes poderão solicitar a presença do garçom de forma rápida e prática, usando apenas o celular, sem a necessidade de baixar nenhum aplicativo. Além disso, você poderá acompanhar em tempo real as solicitações e agilizar o atendimento de forma ainda mais eficiente.
+Com o ProntoZap, seus clientes poderão solicitar a presença do garçom de forma rápida e prática, usando apenas o celular, sem a necessidade de baixar nenhum aplicativo. Além disso, você poderá acompanhar em tempo real as solicitações e agilizar o atendimento de forma ainda mais eficiente.
 
 Estamos comprometidos em oferecer um serviço de qualidade e estamos à disposição para esclarecer quaisquer dúvidas que possam surgir. Conte conosco para aprimorar o atendimento em seu estabelecimento e proporcionar uma experiência ainda mais satisfatória aos seus clientes.
 
-Mais uma vez, seja muito bem-vindo ao Waiter Express!
+Mais uma vez, seja muito bem-vindo ao ProntoZap!
 
 Atenciosamente,
 Equipe Waiter Express.
