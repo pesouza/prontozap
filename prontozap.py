@@ -143,9 +143,9 @@ def login():
 def register():
     form = request.form
     if form.validate():
-        if DB.get_user(form.email.data):
+        if DB.get_user(form['email']):
             form.email.errors.append("Endereço de e-mail já registrado")
-            return render_template("index.html", loginform=LoginForm(), registrationform=form)
+            return render_template("index.html")
 
         '''customer = stripe.Customer.create(
             email=request.form['email'],
@@ -153,11 +153,11 @@ def register():
         )'''
 
         salt = PH.get_salt()
-        hashed = PH.get_hash(form.password2.data + salt)
+        hashed = PH.get_hash(form['password'] + salt)
         token = generate_confirmation_token()
-        DB.add_user(str(form.place.data), form.email.data, salt, hashed, token, customer.id)
+        DB.add_user(str(form['place']), form['email'], salt, hashed, token) # , customer.id)
 
-        send_confirmation_email(form.email.data, token)
+        send_confirmation_email(form['email'], token)
 
         return render_template("index.html", onloadmessage="Registro bem sucedido! Verifique sua caixa postal.")
     return render_template("index.html")
@@ -237,23 +237,6 @@ def account_deletetable():
     DB.delete_table(tableid)
     return redirect(url_for('account'))
 
-
-@app.route("/newrequest/<tid>")
-def new_request(tid):
-    if DB.add_request(tid, datetime.datetime.now()):
-        message = "Seu garçom está a caminho!"
-        background_color = "green"
-        sound = 'sounds/ok.wav'
-        image = 'site/ok.png'
-    else:
-        message = "Por favor, seja paciente. Você será atendido o mais rápido possível!"
-        background_color = "red"
-        sound = 'sounds/again.wav'
-        image = 'site/again.png'
-
-    return render_template("request.html", message=message, 
-                            background_color=background_color,
-                            sound=sound, image=image)
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
