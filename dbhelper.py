@@ -23,7 +23,7 @@ class DBHelper:
         self.db.users.insert_one({"place": place,  "email": email, 
                                 "salt": salt, "hashed": hashed, 
                                 "confirmed": False, "token": token, 
-                                "stripe_id": customer,
+                                #"stripe_id": customer,
                                 "created_on": datetime.today()})
 
 
@@ -44,29 +44,6 @@ class DBHelper:
 
     def get_testem(self):
         return list(self.db.testem.find().sort([('created_on', pymongo.DESCENDING)]))
-
-    def add_table(self, number, owner):
-        new_id = self.db.tables.insert_one({"number": number, "owner": owner}).inserted_id
-        return new_id
-
-    def update_table(self, _id, url, qrc):
-        self.db.tables.update_one({"_id": _id}, {"$set": {"url": url, "qrc": qrc}})
-        table = self.get_table(_id)
-        if table['owner'] == 'mail@exemplo.com.br':
-            self.db.tables.update_one({"_id": _id}, {"$set": {"expire_time": time() + expire_time}})
-        
-
-    def get_tables(self, owner_id):
-        return list(self.db.tables.find({"owner": owner_id}))
-
-    def get_table(self, table_id):
-        return self.db.tables.find_one({"_id": ObjectId(table_id)})
-
-    def delete_table(self, table_id):
-        table = self.get_table(table_id)
-        if os.path.exists(f'{IMAGES_PATH}/{table["qrc"]}'):
-            os.remove(f'{IMAGES_PATH}/{table["qrc"]}')
-        self.db.tables.delete_one({"_id": ObjectId(table_id)})
 
     def add_request(self, table_id, dtime):
         table = self.get_table(table_id)

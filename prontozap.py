@@ -128,14 +128,15 @@ def load_user(user_id):
 def login():
     form = request.form
     if form.validate():
-        stored_user = DB.get_user(form.loginemail.data)
-        if stored_user and PH.validate_password(form.loginpassword.data, stored_user['salt'], stored_user['hashed']) and stored_user['confirmed']:
-            user = User(form.loginemail.data)
+        stored_user = DB.get_user(form['email'])
+        if stored_user and PH.validate_password(form["password"], stored_user['salt'], stored_user['hashed']) and stored_user['confirmed']:
+            user = User(form["email"])
             login_user(user, remember=True)
             DB.last_login(stored_user["email"])
-            return redirect(url_for('account'))
-        form.loginemail.errors.append("E-mail ou senha inválido")
-    return render_template("index.html", loginform=form, registrationform=RegistrationForm())
+            return redirect(url_for('dashboard'))
+        else:
+            return render_template("index.html", error="E-mail ou senha inválido")
+    return render_template("index.html")
 
 
 @app.route("/register", methods=["POST"])
@@ -158,15 +159,15 @@ def register():
 
         send_confirmation_email(form.email.data, token)
 
-        return render_template("index.html", loginform=LoginForm(), registrationform=form, onloadmessage="Registro bem sucedido! Verifique sua caixa postal.")
-    return render_template("index.html", loginform=LoginForm(), registrationform=form)
+        return render_template("index.html", onloadmessage="Registro bem sucedido! Verifique sua caixa postal.")
+    return render_template("index.html")
 
 @app.route("/confirm/<token>")
 def confirm_email(token):
     user = DB.confirm_email(token)
     if user is not None:
         send_welcome_email(user['email'], user['place'])
-        return render_template("index.html", loginform=LoginForm(), registrationform=RegistrationForm(), onloadmessage="Seu email foi confirmado!")
+        return render_template("index.html", onloadmessage="Seu email foi confirmado!")
         #return "Seu email foi confirmado!"
     else:
         #return render_template("home.html", loginform=LoginForm(), registrationform=RegistrationForm(), onloadmessage="Token inválido!")
@@ -180,8 +181,7 @@ def logout():
 @app.route("/")
 def home():
     testemunhos = DB.get_testem()
-    return render_template("index.html", loginform=LoginForm(), registrationform=RegistrationForm(), 
-                            testemunhos=testemunhos)
+    return render_template("index.html", testemunhos=testemunhos)
 
 
 @app.route("/dashboard")
